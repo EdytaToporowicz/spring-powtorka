@@ -53,18 +53,18 @@ public class User {
             return true;
         }
         String[] splitData = phoneNumber.split(" ");
-        if ((splitData.length == 3)) {
-            boolean allElementsHaveSameExpectedSize = Arrays.stream(splitData).allMatch(subPart -> subPart.length() == 3);
+        if (splitData.length == 3) {
+            final boolean allElementsHaveSameExpectedSize = Arrays.stream(splitData).allMatch(subPart -> subPart.length() == 3);
             if (!allElementsHaveSameExpectedSize) {
                 return false;
             }
 
-            return Arrays.stream(splitData).allMatch(subPart -> subPart.chars().allMatch(ch -> Character.isDigit(ch)));
+            return Arrays.stream(splitData)
+                    .allMatch(subPart -> subPart.chars()
+                            .allMatch(Character::isDigit));
         } else if (splitData.length == 4) {
-            //todo
+            // IMPLEMENT VALIDATION
         }
-
-
         return false;
     }
 }

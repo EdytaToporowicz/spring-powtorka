@@ -7,6 +7,7 @@ import pl.sdacademy.wiosnademo.repositories.UserRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service    //lub @Component = każdy działa
 @Transactional  //=to tak jakby na każdej metodzie publicznej dodać tranzakcyjność
@@ -22,7 +23,7 @@ public class UserCrudService {
     public User createUser(User user) {
         userRepository.findByUsernameOrEmail(user.getUsername(), user.getEmail())
                 .ifPresent(existingUser -> {
-                    throw new UserActionException("User already exists!");
+                    throw new ApplicationException("User already exists!");
                 });
         return userRepository.save(user);
     }
@@ -51,7 +52,7 @@ public class UserCrudService {
     public User getUserByUsername(String username) {
         Optional<User> existingUserOptional = userRepository.findById(username);
         if (existingUserOptional.isEmpty()) {
-            throw new UserActionException("User does not exist and cannot display");
+            throw new ApplicationException("User does not exist and cannot display");
         }
         //jesli User istnieje, to muszę wypakować z pudełka Optionala
         return existingUserOptional.get();
@@ -60,5 +61,16 @@ public class UserCrudService {
     // znajdź wszystkich Userów
     public List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    public Set<User> search(final String email, final String mobile, final String type) {
+        if (type.equalsIgnoreCase("or")) {
+            return userRepository.findAllByEmailOrPhoneNumberEndsWith(email, mobile);
+        } else if (type.equalsIgnoreCase("and")) {
+            return userRepository.findByEmailAndPhoneNumberEndsWith(email, mobile)
+                    .map(usr -> Set.of(usr))
+                    .orElse(Set.of());
+        }
+        throw new ApplicationException("Search type not found");
     }
 }

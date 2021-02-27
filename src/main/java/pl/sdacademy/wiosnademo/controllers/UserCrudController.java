@@ -10,6 +10,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Set;
 
 /*
 GET users - pobierz wszystkich userów
@@ -20,7 +21,7 @@ DELETE users/ID - usuń Usera po id
  */
 
 @RestController // jest to połączenie @Controller i @ResponseBody
-// @Controller - i wtedy ResponseEntity
+// @Controller - i wtedy ResponseEntity...
 @RequestMapping("api/users")
 public class UserCrudController {
 
@@ -49,7 +50,7 @@ public class UserCrudController {
 
     @PutMapping("/{username}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateUser(@PathVariable String username,@Valid @RequestBody User user) {
+    public void updateUser(@PathVariable String username, @Valid @RequestBody User user) {
         userCrudService.updateUser(username, user);
     }
 
@@ -57,5 +58,17 @@ public class UserCrudController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable String username) {
         userCrudService.deleteUser(username);
+    }
+//  @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+//  public ResponseEntity<List<User>> getAllUsers() {
+//    return ResponseEntity.ok(userCrudService.getAllUsers());
+//  }
+
+    // http://localhost:8080/api/users/search?email=wartosc&mobile=wartosc
+    //szukajka po Userze
+    @GetMapping("/search")
+    public Set<User> findUsers(@RequestParam(name = "email") String email, @RequestParam(name = "mobile") String mobile,
+                               @RequestParam(name = "type") String type) { // or lub and
+        return userCrudService.search(email, mobile, type);
     }
 }
