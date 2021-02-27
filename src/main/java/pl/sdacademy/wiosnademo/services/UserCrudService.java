@@ -55,7 +55,7 @@ public class UserCrudService {
             throw new ApplicationException("User does not exist and cannot display");
         }
         //jesli User istnieje, to muszę wypakować z pudełka Optionala
-        return existingUserOptional.get();
+        return  existingUserOptional.get();
     }
 
     // znajdź wszystkich Userów
