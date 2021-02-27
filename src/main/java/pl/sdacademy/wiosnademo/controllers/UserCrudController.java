@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.sdacademy.wiosnademo.domain.User;
 import pl.sdacademy.wiosnademo.services.UserCrudService;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -41,14 +42,14 @@ public class UserCrudController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createUser(@RequestBody User user) throws URISyntaxException { // konwertuje ciało żądania z np.JSON na User
+    public ResponseEntity<Void> createUser(@Valid @RequestBody User user) throws URISyntaxException { // konwertuje ciało żądania z np.JSON na User
         userCrudService.createUser(user);   //tu zwroci na, body obiektu=wszsytko
-        return ResponseEntity.created(new URI("/users/" + user.getUsername())).build();   //zwróci adres url do obiektu
+        return ResponseEntity.created(new URI("/api/users/" + user.getUsername())).build();   //zwróci adres url do obiektu
     }
 
     @PutMapping("/{username}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateUser(@PathVariable String username, @RequestBody User user) {
+    public void updateUser(@PathVariable String username,@Valid @RequestBody User user) {
         userCrudService.updateUser(username, user);
     }
 

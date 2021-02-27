@@ -42,8 +42,9 @@ public class UserCrudService {
     }
 
     //usuwanie
-    public void deleteUser(String username) {
-        userRepository.deleteById(username);    //nie musimy sprawdzać czy istnieje, bo trans.delete już to ma
+    public void deleteUser(String username) {   //opcjonalnie sprawdzic czy User istnieje
+        getUserByUsername(username);
+        userRepository.deleteById(username);
     }
 
     // znajdowanie Usera

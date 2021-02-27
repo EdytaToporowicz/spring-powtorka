@@ -1,5 +1,7 @@
 package pl.sdacademy.wiosnademo.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -33,15 +35,19 @@ public class User {
     private String password;
 
     //@Pattern(//regex) lub @AssertTrue na dole
+    @JsonProperty("mobile")         //pole w Jsonie będzie się nazywało "mobile"
     private String phoneNumber;
 
-    @CreationTimestamp  //automatycznie zadzieje się data i czas
+    @JsonIgnore             //żeby JSON nie wyświetlał nam w body tego pola
+    @CreationTimestamp      //automatycznie zadzieje się data i czas
     private LocalDateTime localDateTime;
 
+    @JsonIgnore
     @UpdateTimestamp
     private LocalDateTime updateDate;
 
-    @AssertTrue //zamiast @Pattern
+    @JsonIgnore
+    @AssertTrue     //zamiast @Pattern
     public boolean isPhoneNumberValid() {
         if (phoneNumber == null) {
             return true;
