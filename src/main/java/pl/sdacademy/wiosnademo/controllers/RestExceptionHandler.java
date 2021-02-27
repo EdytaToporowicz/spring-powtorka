@@ -37,5 +37,12 @@ public class RestExceptionHandler {
                 details.put(fieldError.getField(), errorsMessages);
             }
         }
+        return new ErrorMessage("Validation failed", details);
+    }
+
+    @ExceptionHandler(Exception.class)  // wyjątki o których nie wiedzieliśmy
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorMessage handle(Exception exp){
+        return new ErrorMessage(exp.getMessage(),Map.of());
     }
 }
