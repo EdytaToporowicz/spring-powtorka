@@ -27,12 +27,12 @@ public class User {
 
     @Email
     @NotNull
-    private String emial;
+    private String email;
 
     @NotNull
     private String password;
 
-    //lub @Pattern(//regex)
+    //@Pattern(//regex) lub @AssertTrue na dole
     private String phoneNumber;
 
     @CreationTimestamp  //automatycznie zadzieje się data i czas
